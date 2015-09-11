@@ -38,6 +38,18 @@ and open the template in the editor.
         <meta name="theme-color" content="#ffffff">
         <link rel="shortcut icon" href="favicon.ico">
 
+        <style>
+            body {
+                  background-color: #c12e2a
+            }
+            
+            h1   {
+                color:blue
+            }
+            
+            
+        </style>
+        
     </head>
 
     <body>
@@ -51,7 +63,7 @@ and open the template in the editor.
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">VGDC</a>
+                    <a class="navbar-brand" href="#"><img alt="Brand" src="favicon.ico"></a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -82,20 +94,26 @@ and open the template in the editor.
                     
                     <div class="jumbotron" >
                         <h1 data-bind='text: postDisplayedTitle'></h1>
-                        <p data-bind="text: postDisplayedSubtext"></p>
-                        <p><a class="btn btn-primary btn" href="#" role="button">Too Announcement (Replace jumbotron with article)</a></p>
+                        <i><p data-bind="text: postDisplayedSubtext"></p></i>
+                        <p><a class="btn btn-danger btn" href="#" role="button">Read</a></p>
                     </div>
 
                     <div>
 
-                        <h4>Previous Announcements..</h4>
-                        <div class="row">
-                            <div data-bind="foreach: postsLoaded">
+                        
 
-                                <div class="col-md-4">
-                                    <img style='width:100%'data-bind="attr:{src: imageURL}, click: $parent.displayPost"  alt="..." class="img-rounded">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Previous Announcements..</h3>
+                            </div>
+                            <div class="panel-body row">
+                                <div data-bind="foreach: postsLoaded">
+
+                                    <div class="col-md-4">
+                                        <img style='width:100%'data-bind="attr:{src: imageURL}, click: $parent.displayPost"  alt="..." class="img-rounded">
+                                    </div>
+
                                 </div>
-
                             </div>
                         </div>
 
