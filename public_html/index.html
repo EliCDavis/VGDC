@@ -19,6 +19,8 @@ and open the template in the editor.
 
         <link href="js/libs/bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
         
+        <link href="js/libs/magic/magic.min.css" rel="stylesheet">
+        
         <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
         <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
@@ -75,7 +77,6 @@ and open the template in the editor.
                         <li><a href="https://www.reddit.com/r/MSUVGDC/">Discussion</a></li>
                         <li><a href="#">Archive</a></li>
 
-
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -92,32 +93,66 @@ and open the template in the editor.
             <div class="row">
                 <div class="col-md-8" id="announcements-panel">
                     
-                    <div class="jumbotron" >
-                        <h1 data-bind='text: postDisplayedTitle'></h1>
-                        <i><p data-bind="text: postDisplayedSubtext"></p></i>
-                        <p><a class="btn btn-danger btn" href="#" role="button">Read</a></p>
-                    </div>
-
-                    <div>
-
-                        
-
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Previous Announcements..</h3>
-                            </div>
-                            <div class="panel-body row">
-                                <div data-bind="foreach: postsLoaded">
-
-                                    <div class="col-md-4">
-                                        <img style='width:100%'data-bind="attr:{src: imageURL}, click: $parent.displayPost"  alt="..." class="img-rounded">
-                                    </div>
-
-                                </div>
-                            </div>
+                    <div data-bind="if: viewType() == 'Jumbo'">
+                    
+                        <div class="jumbotron" >
+                            <h1 data-bind='text: postDisplayedTitle'></h1>
+                            <i><p data-bind="text: postDisplayedSubtext"></p></i>
+                            <p><a class="btn btn-danger btn" href="#" role="button" data-bind="click:displayFullAnnouncementText">Read</a></p>
                         </div>
 
+                        <div>
 
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Previous Announcements..</h3>
+                                </div>
+                                <div class="panel-body row">
+                                    <div data-bind="foreach: postsLoaded">
+
+                                        <div class="col-md-4">
+                                            <img style='width:100%'data-bind="attr:{src: imageURL}, click: $parent.displayPost"  alt="..." class="img-rounded">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        
+                    </div>
+                    
+                    <div data-bind="if: viewType() == 'Reading'">
+                        
+                        <div class="panel panel-default" data-bind="with:postBeingDisplayed">
+                            
+                            <div class="panel-heading">
+
+                                <h2 class="panel-title" >
+                                    <button data-bind="click: $parent.displayJumboAnnouncement" type="button" class="btn btn-default btn-sm" aria-label="Left Align">
+                                        <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                                    </button>
+                                    <span data-bind="text: title"></span>
+                                </h2>
+                                
+                            </div>
+                            
+                            <div class="panel-body">
+                                
+                                <img style='width:100%' 
+                                    data-bind="attr:{src: imageURL}, 
+                                    click: $parent.displayPost"  
+                                    alt="..." class="img-rounded"><br/> <br/>
+                                
+                                <h3 data-bind="text: smallText"></h3><br />
+                                
+                                <p data-bind="text: postText" ></p>
+
+                            </div>
+                            
+                        </div>
+                        
                     </div>
 
                 </div>
@@ -190,12 +225,54 @@ and open the template in the editor.
 
                 var self = this;
 
+                /**
+                 * There are three different ways for announcements to be 
+                 * displayed, being either Jumbo, Reading, or Side
+                 */
+                self.viewType = ko.observable("Jumbo");
+
                 self.postBeingDisplayed = ko.observable();
                 
                 self.postsLoaded = ko.observableArray();
 
                 self.displayPost = function(post){
                     self.postBeingDisplayed(post);
+                }
+                
+                self.displayFullAnnouncementText = function(){
+                    
+                    $('#announcements-panel').addClass('magictime rotateDown');
+                    
+                    setTimeout(function(){
+                        
+                        self.viewType("Reading");
+                        
+                        $('#announcements-panel').removeClass('magictime rotateDown');
+                        $('#announcements-panel').addClass('magictime perspectiveDownRetourn');
+                        
+                        setTimeout(function(){
+                            $('#announcements-panel').removeClass('magictime perspectiveDownRetourn');
+                        },1000);
+                        
+                    },1000);
+                        
+                }
+                
+                self.displayJumboAnnouncement = function(){
+                    $('#announcements-panel').addClass('magictime rotateDown');
+                    
+                    setTimeout(function(){
+                        
+                        self.viewType("Jumbo");
+                        
+                        $('#announcements-panel').removeClass('magictime rotateDown');
+                        $('#announcements-panel').addClass('magictime perspectiveDownRetourn');
+                        
+                        setTimeout(function(){
+                            $('#announcements-panel').removeClass('magictime perspectiveDownRetourn');
+                        },1000);
+                        
+                    },1000);
                 }
                 
                 self.postDisplayedTitle = ko.computed(function(){
