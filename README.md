@@ -1,2 +1,1 @@
-# VGDC
-Website of the Video Game Development Club™®© 
+%23%20VGDC%0AWebsite%20of%20the%20Video%20Game%20Development%20Club%E2%84%A2%C2%AE%C2%A9%20%0A%0A*An%20attempt%20at%20hosting%20everything%20not%20on%20our%20server*
