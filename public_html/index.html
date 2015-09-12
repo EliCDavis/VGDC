@@ -20,7 +20,7 @@ and open the template in the editor.
         <link href="js/libs/bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
         
         <link href="js/libs/magic/magic.min.css" rel="stylesheet">
-        
+
         <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
         <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
@@ -44,14 +44,14 @@ and open the template in the editor.
             body {
                   background-color: #c12e2a
             }
-            
+
             h1   {
                 color:blue
             }
-            
-            
+
+
         </style>
-        
+
     </head>
 
     <body>
@@ -75,7 +75,7 @@ and open the template in the editor.
                         <li><a href="#">Announcements</a></li>
                         <li><a href="#">Events</a></li>
                         <li><a href="https://www.reddit.com/r/MSUVGDC/">Discussion</a></li>
-                        <li><a href="#">Archive</a></li>
+                        <li><a href="http://www.videogamedev.club/">Resource Archive</a></li>
 
                     </ul>
 
@@ -92,6 +92,7 @@ and open the template in the editor.
 
             <div class="row">
                 <div class="col-md-8" id="announcements-panel">
+
                     
                     <div data-bind="if: viewType() == 'Jumbo'">
                     
@@ -101,7 +102,9 @@ and open the template in the editor.
                             <p><a class="btn btn-danger btn" href="#" role="button" data-bind="click:displayFullAnnouncementText">Read</a></p>
                         </div>
 
+
                         <div>
+
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -109,6 +112,7 @@ and open the template in the editor.
                                 </div>
                                 <div class="panel-body row">
                                     <div data-bind="foreach: postsLoaded">
+
 
                                         <div class="col-md-4">
                                             <img style='width:100%'data-bind="attr:{src: imageURL}, click: $parent.displayPost"  alt="..." class="img-rounded">
@@ -163,7 +167,7 @@ and open the template in the editor.
                             <h3 class="panel-title">Our Last Meeting</h3>
                         </div>
                         <div class="panel-body">
-                            Here goes php pulling from a table set up the logs all our meetings looking at the most recent date. This would just include a summary. A link for further reading would also be included. A Meetings log would be our "History". If we organize it nicely we could have people use the log for learning. If we had a talk on procedural generation using perlin 
+                            Here goes php pulling from a table set up the logs all our meetings looking at the most recent date. This would just include a summary. A link for further reading would also be included. A Meetings log would be our "History". If we organize it nicely we could have people use the log for learning. If we had a talk on procedural generation using perlin
                         </div>
                     </div>
                 </div>
@@ -181,16 +185,16 @@ and open the template in the editor.
 
             </div>
 
-        </div> 
+        </div>
 
         <script>
 
             /**
-             * Goes to reddit and grabs JSON representing posts made by the 
+             * Goes to reddit and grabs JSON representing posts made by the
              * reddit user "MSUVGDCAnnouncements" inside of the subreddit
              * msuvgdc.  If it's succesful it will call the cb function with
              * the data it received.
-             * 
+             *
              * @param {type} cb
              * @returns {undefined}
              */
@@ -218,7 +222,7 @@ and open the template in the editor.
             }
 
             /**
-             * 
+             *
              * @returns {undefined}
              */
             function AnnouncementsViewModel() {
@@ -232,12 +236,13 @@ and open the template in the editor.
                 self.viewType = ko.observable("Jumbo");
 
                 self.postBeingDisplayed = ko.observable();
-                
+
                 self.postsLoaded = ko.observableArray();
 
                 self.displayPost = function(post){
                     self.postBeingDisplayed(post);
                 }
+
                 
                 self.displayFullAnnouncementText = function(){
                     
@@ -275,22 +280,23 @@ and open the template in the editor.
                     },1000);
                 }
                 
+
                 self.postDisplayedTitle = ko.computed(function(){
-                  
+
                     if(self.postBeingDisplayed() != null){
                         return self.postBeingDisplayed().title;
-                    } 
-                    
+                    }
+
                     return "Unable to load posts!";
-                    
+
                 })
-                
+
                 self.postDisplayedSubtext = ko.computed(function(){
-                    
+
                     if(self.postBeingDisplayed() != null && self.postBeingDisplayed().smallText){
                         return self.postBeingDisplayed().smallText;
-                    } 
-                    
+                    }
+
                     return "";
                 })
 
@@ -315,9 +321,9 @@ and open the template in the editor.
                         self.postsLoaded.push(post);
 
                     }
-                    
+
                     self.postBeingDisplayed(self.postsLoaded()[0]);
-                    
+
                 });
 
             }
