@@ -72,8 +72,7 @@ and open the template in the editor.
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
 
-                        <li><a href="#">Announcements</a></li>
-                        <li><a href="#">Events</a></li>
+                        <li><a href="https://www.google.com/calendar/embed?src=01eeca7ap5jgqn2ihk7sas0dcc%40group.calendar.google.com&ctz=America/Chicago">Calender</a></li>
                         <li><a href="https://www.reddit.com/r/MSUVGDC/">Discussion</a></li>
                         <li><a href="http://www.videogamedev.club/">Resource Archive</a></li>
 
@@ -82,6 +81,12 @@ and open the template in the editor.
                     <ul class="nav navbar-nav navbar-right">
 
                         <li><a href="#"><b>Contact Us</b></a></li>
+                        
+                        <li>
+                            <a href="https://github.com/EliCDavis/VGDC">
+                                <img width="20" src="http://uxrepo.com/static/icon-sets/typicons/svg/github-circled.svg">
+                            </a>
+                        </li>
 
                     </ul>
                 </div><!-- /.navbar-collapse -->
@@ -102,7 +107,6 @@ and open the template in the editor.
                             <p><a class="btn btn-danger btn" href="#" role="button" data-bind="click:displayFullAnnouncementText">Read</a></p>
                         </div>
 
-
                         <div>
 
 
@@ -113,9 +117,10 @@ and open the template in the editor.
                                 <div class="panel-body row">
                                     <div data-bind="foreach: postsLoaded">
 
-
                                         <div class="col-md-4">
+                                            <a href="#" class="thumbnail">
                                             <img style='width:100%'data-bind="attr:{src: imageURL}, click: $parent.displayPost"  alt="..." class="img-rounded">
+                                            </a>
                                         </div>
 
                                     </div>
@@ -149,10 +154,18 @@ and open the template in the editor.
                                     click: $parent.displayPost"  
                                     alt="..." class="img-rounded"><br/> <br/>
                                 
-                                <h3 data-bind="text: smallText"></h3><br />
+                                <h3 data-bind="text: smallText"></h3>
                                 
                                 <p data-bind="text: postText" ></p>
 
+                                <br />
+                                
+                                <h4>Comments:</h4>
+                                
+                                <div data-bind="html: comments"></div>
+                                
+                                <a class="btn btn-danger btn" data-bind="attr:{href: postURL}" role="button" >Leave a Comment</a>
+                                
                             </div>
                             
                         </div>
@@ -164,21 +177,26 @@ and open the template in the editor.
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Our Last Meeting</h3>
+                            <h3 class="panel-title">Links</h3>
                         </div>
                         <div class="panel-body">
-                            Here goes php pulling from a table set up the logs all our meetings looking at the most recent date. This would just include a summary. A link for further reading would also be included. A Meetings log would be our "History". If we organize it nicely we could have people use the log for learning. If we had a talk on procedural generation using perlin
+                            Unity download:<br>
+                            <a href="http://unity3d.com/get-unity/download?ref=personal">http://unity3d.com/get-unity/download?ref=personal</a>
+                            <br> <br>
+                            
+                            Github download:<br>
+                            <a href="https://desktop.github.com/">https://desktop.github.com/</a>
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="col-md-4">
-                    <div class="panel panel-default" >
+                    <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Upcoming Events</h3>
+                            <h3 class="panel-title">Suggestions?</h3>
                         </div>
                         <div class="panel-body">
-                            Here would either be located a nice calender that would be pulling from our group's face book that includes all the clubs events, or what would more likely happen is using php we pull from a table meant for storing events. Doing so would probably end up in a list like format for events.
+                            What would you like to see here?  Send me your suggestions!  Let your voice be heard! 
                         </div>
                     </div>
                 </div>
@@ -199,7 +217,50 @@ and open the template in the editor.
              * @returns {undefined}
              */
             function getAnnouncementsJson(cb) {
-
+                makeHttpRequest("http://www.reddit.com/r/MSUVGDC/search.json?q=author%3AMSUVGDCAnnouncements&sort=new&restrict_sr=on",null,cb);
+            }
+            
+            /**
+             * Loads the comments of a specific post on reddit.
+             * 
+             * @param {string} post id used for looking up comments of a specific post
+             * @param {function} cb The function that is called with the data returned from the request
+             * @returns {undefined}
+             */
+            function getCommentsOfAnnouncementJson(postId, cb){
+                makeHttpRequest("https://www.reddit.com/r/MSUVGDC/comments/"+postId+"/.json",null,cb);
+            }
+            
+            /**
+             * Reddit comments have alot of junk we don't need for displaying on
+             * the page, as well as being nested, we need a recursive function
+             * to load in all the comments and build an appropriate JSON object.
+             * 
+             * @returns {undefined}
+             */
+            function recursiveBuildComments(rawComments){
+        
+                var htmlString = "";
+                
+                
+                for(var i = 0; i < rawComments.data.children.length; i ++){
+                    htmlString += "<div class='well well-sm'>";
+                    htmlString += "<h5>"+ rawComments.data.children[i].data.author +"</h5>";
+                    htmlString += rawComments.data.children[i].data.body +"<br/><br/>";
+                    console.log(rawComments.data.children[i].data);
+                    if(rawComments.data.children[i].data.replies !== ""){
+                        
+                        htmlString += recursiveBuildComments(rawComments.data.children[i].data.replies);
+                    }
+                    
+                    htmlString +="</div>";
+                }
+                
+                return htmlString;
+                
+            }
+    
+            function makeHttpRequest(url, errcb, succb){
                 var xmlhttp = new XMLHttpRequest();
 
                 xmlhttp.onreadystatechange = function () {
@@ -207,18 +268,28 @@ and open the template in the editor.
                     if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
 
                         var postData = JSON.parse(xmlhttp.responseText);
-                        cb(postData);
+                        succb(postData);
 
                     } else {
-                        cb();
+                        
+                        if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
+                            alert("Failure Loading Announcements from Reddit!  This\
+                                sometimes happens if your on IE. ");
+                
+                            if(errcb != null){
+                                errcb();
+                            }
+                            
+                        }
+                        
+                        //cb();
                     }
                 };
 
                 xmlhttp.open("GET",
-                        "http://www.reddit.com/r/MSUVGDC/search.json?q=author%3AMSUVGDCAnnouncements&sort=new&restrict_sr=on", true);
+                        url, true);
 
                 xmlhttp.send();
-
             }
 
             /**
@@ -242,7 +313,6 @@ and open the template in the editor.
                 self.displayPost = function(post){
                     self.postBeingDisplayed(post);
                 }
-
                 
                 self.displayFullAnnouncementText = function(){
                     
@@ -251,6 +321,15 @@ and open the template in the editor.
                     setTimeout(function(){
                         
                         self.viewType("Reading");
+                        
+                        if(self.postBeingDisplayed().comments() === "None :(<br><br>"){
+                            getCommentsOfAnnouncementJson(self.postBeingDisplayed().id, function(data){
+                                
+                                if(data[1].data.children.length > 0 ){
+                                    self.postBeingDisplayed().comments(recursiveBuildComments(data[1]));
+                                }
+                            });
+                        }
                         
                         $('#announcements-panel').removeClass('magictime rotateDown');
                         $('#announcements-panel').addClass('magictime perspectiveDownRetourn');
@@ -310,12 +389,14 @@ and open the template in the editor.
                     for (var i = 0; i < data.data.children.length; i++) {
 
                         var textPost = JSON.parse(data.data.children[i].data.selftext);
-
                         var post = {
                             "title": data.data.children[i].data.title,
                             "imageURL": textPost.image,
                             "postText": textPost.post,
-                            "smallText": textPost.smallText
+                            "smallText": textPost.smallText,
+                            "id": data.data.children[i].data.id,
+                            "comments" : ko.observable("None :(<br><br>"),
+                            "postURL" : data.data.children[i].data.url
                         };
 
                         self.postsLoaded.push(post);
