@@ -80,7 +80,7 @@ and open the template in the editor.
 
                     <ul class="nav navbar-nav navbar-right">
 
-                        <li><a href="#"><b>Contact Us</b></a></li>
+                        <li><a href="javascript:$('#confirm-action').modal()"><b>Contact Us</b></a></li>
                         
                         <li>
                             <a href="https://github.com/EliCDavis/VGDC">
@@ -413,6 +413,39 @@ and open the template in the editor.
 
         </script>
 
+        <body>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="confirm-action" role="dialog">
+            <div class="modal-dialog">
+                
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header" style="padding:15px 30px;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4><span class="modal-title"></span>Contact Information</h4>
+                    </div>
+                    <div class="modal-body" style="padding:50px 20px 2px;">
+                        <p><strong><span id="custom-Action-Message"></span></strong><div align="right">
+                            Eli Davis<br>
+                            Email: ecd157@msstate.edu<br>
+                            <br>
+                            
+                            <!--Other officers you can enter your contact information here-->
+                            
+                        </div>
+                        </p>
+                    </div>
+<!--                    <div class="modal-footer">
+                        <a class="btn btn-warning btn-ok" data-dismiss="modal">Got it!</a>
+                    </div>-->
+                </div>
+                
+            </div>
+        </div>
+        
+    </body>
+        
     </body>
 
 </html>
