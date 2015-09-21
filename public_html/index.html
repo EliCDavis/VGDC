@@ -16,11 +16,12 @@ and open the template in the editor.
         <script src="js/libs/ko/knockout-3.3.0.js"></script>
         <script src="js/libs/bootstrap-3.3.5-dist/js/bootstrap.js"></script>
         <script src ="js/libs/github/github.js"></script>
-
+        <script src="js/libs/showdown/showdown.min.js"></script>
+        
         <link href="js/libs/bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
         
         <link href="js/libs/magic/magic.min.css" rel="stylesheet">
-
+        
         <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
         <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
@@ -156,7 +157,7 @@ and open the template in the editor.
                                 
                                 <h3 data-bind="text: smallText"></h3>
                                 
-                                <p data-bind="text: postText" ></p>
+                                <p data-bind="html: postText" ></p>
 
                                 <br />
                                 
@@ -385,6 +386,8 @@ and open the template in the editor.
                     if (data == null) {
                         return;
                     }
+                    
+                    var converter = new showdown.Converter();
 
                     for (var i = 0; i < data.data.children.length; i++) {
 
@@ -392,7 +395,7 @@ and open the template in the editor.
                         var post = {
                             "title": data.data.children[i].data.title,
                             "imageURL": textPost.image,
-                            "postText": textPost.post,
+                            "postText": converter.makeHtml(textPost.post),
                             "smallText": textPost.smallText,
                             "id": data.data.children[i].data.id,
                             "comments" : ko.observable("None :(<br><br>"),
@@ -428,10 +431,10 @@ and open the template in the editor.
                     <div class="modal-body" style="padding:50px 20px 2px;">
                         <p><strong><span id="custom-Action-Message"></span></strong><div align="center">
                             <b>Eli Davis</b><br>
-                            email: ecd157@msstate.edu<br>
+                            ecd157@msstate.edu<br>
                             <br>
                             <b>Hunter Holder</b><br>
-                            email: hlh229@msstate.edu<br>
+                            hlh229@msstate.edu<br>
                             <br>
                             <!--Other officers you can enter your contact information here-->
                             
