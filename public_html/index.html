@@ -17,11 +17,11 @@ and open the template in the editor.
         <script src="js/libs/bootstrap-3.3.5-dist/js/bootstrap.js"></script>
         <script src ="js/libs/github/github.js"></script>
         <script src="js/libs/showdown/showdown.min.js"></script>
-        
+
         <link href="js/libs/bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
-        
+
         <link href="js/libs/magic/magic.min.css" rel="stylesheet">
-        
+
         <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
         <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
@@ -40,6 +40,11 @@ and open the template in the editor.
         <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
         <link rel="shortcut icon" href="favicon.ico">
+
+        <link href="main.css" rel="stylesheet">
+
+        <!-- Email form -->
+        <script src ="js/email.js"></script>
 
         <style>
             body {
@@ -84,7 +89,7 @@ and open the template in the editor.
                     <ul class="nav navbar-nav navbar-right">
 
                         <li><a href="javascript:$('#confirm-action').modal()"><b>Contact Us</b></a></li>
-                        
+
                         <li>
                             <a href="https://github.com/EliCDavis/VGDC">
                                 <img width="20" src="http://uxrepo.com/static/icon-sets/typicons/svg/github-circled.svg">
@@ -101,9 +106,9 @@ and open the template in the editor.
             <div class="row" data-bind="if: currentPageView() == 'Front'">
                 <div class="col-md-8" id="announcements-panel">
 
-                    
+
                     <div data-bind="if: viewType() == 'Jumbo'">
-                    
+
                         <div class="jumbotron" >
                             <h1 data-bind='text: postDisplayedTitle'></h1>
                             <i><p data-bind="text: postDisplayedSubtext"></p></i>
@@ -132,13 +137,13 @@ and open the template in the editor.
 
 
                         </div>
-                        
+
                     </div>
-                    
+
                     <div data-bind="if: viewType() == 'Reading'">
-                        
+
                         <div class="panel panel-default" data-bind="with:postBeingDisplayed">
-                            
+
                             <div class="panel-heading">
 
                                 <h2 class="panel-title" >
@@ -147,37 +152,51 @@ and open the template in the editor.
                                     </button>
                                     <span data-bind="text: title"></span>
                                 </h2>
-                                
+
                             </div>
-                            
+
                             <div class="panel-body">
-                                
-                                <img style='width:100%' 
-                                    data-bind="attr:{src: imageURL}, 
-                                    click: $parent.displayPost"  
+
+                                <img style='width:100%'
+                                    data-bind="attr:{src: imageURL},
+                                    click: $parent.displayPost"
                                     alt="..." class="img-rounded"><br/> <br/>
-                                
+
                                 <h3 data-bind="text: smallText"></h3>
-                                
+
                                 <p data-bind="html: postText" ></p>
 
                                 <br />
-                                
+
                                 <h4>Comments:</h4>
-                                
+
                                 <div data-bind="html: comments"></div>
-                                
+
                                 <a class="btn btn-danger btn" data-bind="attr:{href: postURL}" role="button" >Leave a Comment</a>
-                                
+
                             </div>
-                            
+
                         </div>
-                        
+
                     </div>
                     
                     
 
                 </div>
+
+                <!-- <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Email Sign-up</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form id="signup-form" method="post" action="#" class="form-inline">
+                				<input type="email" style="display:inline-block" name="email" id="email" placeholder="Email Address" />
+                				<input id="signup-form input" type="submit" style="display:inline-block" value="Sign Up" />
+                			</form>
+                        </div>
+                    </div>
+                </div> -->
 
                 <div class="col-md-4">
                     <div class="panel panel-default">
@@ -185,16 +204,18 @@ and open the template in the editor.
                             <h3 class="panel-title">Links</h3>
                         </div>
                         <div class="panel-body">
-                            Unity download:<br>
-                            <a href="https://unity3d.com/get-unity/download?thank-you=update&download_nid=18149&os=Win">https://unity3d.com/get-unity/download?thank-you=update&download_nid=18149&os=Win</a>
+                            Unity download (Windows):<br>
+                            <a href="https://unity3d.com/get-unity/download?thank-you=personal&download_nid=24110&os=Win">https://unity3d.com/get-unity/download?thank-you=personal&download_nid=24110&os=Win</a> <br> <br>
+                            Unity download (Mac OSX):<br>
+                            <a href="https://unity3d.com/get-unity/download?thank-you=personal&download_nid=24110&os=Mac">https://unity3d.com/get-unity/download?thank-you=personal&download_nid=24110&os=Mac</a>
                             <br> <br>
-                            
+
                             Github download:<br>
                             <a href="https://desktop.github.com/">https://desktop.github.com/</a>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -265,10 +286,10 @@ and open the template in the editor.
             function getAnnouncementsJson(cb) {
                 makeHttpRequest("http://www.reddit.com/r/MSUVGDC/search.json?q=author%3AMSUVGDCAnnouncements&sort=new&restrict_sr=on",null,cb);
             }
-            
+
             /**
              * Loads the comments of a specific post on reddit.
-             * 
+             *
              * @param {string} post id used for looking up comments of a specific post
              * @param {function} cb The function that is called with the data returned from the request
              * @returns {undefined}
@@ -276,36 +297,36 @@ and open the template in the editor.
             function getCommentsOfAnnouncementJson(postId, cb){
                 makeHttpRequest("https://www.reddit.com/r/MSUVGDC/comments/"+postId+"/.json",null,cb);
             }
-            
+
             /**
              * Reddit comments have alot of junk we don't need for displaying on
              * the page, as well as being nested, we need a recursive function
              * to load in all the comments and build an appropriate JSON object.
-             * 
+             *
              * @returns {undefined}
              */
             function recursiveBuildComments(rawComments){
-        
+
                 var htmlString = "";
-                
-                
+
+
                 for(var i = 0; i < rawComments.data.children.length; i ++){
                     htmlString += "<div class='well well-sm'>";
                     htmlString += "<h5>"+ rawComments.data.children[i].data.author +"</h5>";
                     htmlString += rawComments.data.children[i].data.body +"<br/><br/>";
                     console.log(rawComments.data.children[i].data);
                     if(rawComments.data.children[i].data.replies !== ""){
-                        
+
                         htmlString += recursiveBuildComments(rawComments.data.children[i].data.replies);
                     }
-                    
+
                     htmlString +="</div>";
                 }
-                
+
                 return htmlString;
-                
+
             }
-    
+
             function makeHttpRequest(url, errcb, succb){
                 var xmlhttp = new XMLHttpRequest();
 
@@ -317,17 +338,17 @@ and open the template in the editor.
                         succb(postData);
 
                     } else {
-                        
+
                         if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
                             alert("Failed loading announcements from Reddit!  This\
                                 sometimes happens if you're using IE. ");
-                
+
                             if(errcb != null){
                                 errcb();
                             }
-                            
+
                         }
-                        
+
                         //cb();
                     }
                 };
@@ -347,7 +368,7 @@ and open the template in the editor.
                 var self = this;
 
                 /**
-                 * There are three different ways for announcements to be 
+                 * There are three different ways for announcements to be
                  * displayed, being either Jumbo, Reading, or Side
                  */
                 self.viewType = ko.observable("Jumbo");
@@ -363,53 +384,58 @@ and open the template in the editor.
 
                 self.displayPost = function(post){
                     self.postBeingDisplayed(post);
+
                 };
                 
+
                 self.displayFullAnnouncementText = function(){
-                    
+
                     $('#announcements-panel').addClass('magictime rotateDown');
-                    
+
                     setTimeout(function(){
-                        
+
                         self.viewType("Reading");
-                        
+
                         if(self.postBeingDisplayed().comments() === "None :(<br><br>"){
                             getCommentsOfAnnouncementJson(self.postBeingDisplayed().id, function(data){
-                                
+
                                 if(data[1].data.children.length > 0 ){
                                     self.postBeingDisplayed().comments(recursiveBuildComments(data[1]));
                                 }
                             });
                         }
-                        
+
                         $('#announcements-panel').removeClass('magictime rotateDown');
                         $('#announcements-panel').addClass('magictime perspectiveDownRetourn');
-                        
+
                         setTimeout(function(){
                             $('#announcements-panel').removeClass('magictime perspectiveDownRetourn');
                         },1000);
-                        
+
                     },1000);
                         
                 };
                 
+
                 self.displayJumboAnnouncement = function(){
                     $('#announcements-panel').addClass('magictime rotateDown');
-                    
+
                     setTimeout(function(){
-                        
+
                         self.viewType("Jumbo");
-                        
+
                         $('#announcements-panel').removeClass('magictime rotateDown');
                         $('#announcements-panel').addClass('magictime perspectiveDownRetourn');
-                        
+
                         setTimeout(function(){
                             $('#announcements-panel').removeClass('magictime perspectiveDownRetourn');
                         },1000);
-                        
+
                     },1000);
+
                 };
                 
+
 
                 self.postDisplayedTitle = ko.computed(function(){
 
@@ -436,7 +462,7 @@ and open the template in the editor.
                     if (data == null) {
                         return;
                     }
-                    
+
                     var converter = new showdown.Converter();
 
                     for (var i = 0; i < data.data.children.length; i++) {
@@ -481,11 +507,11 @@ and open the template in the editor.
 
         </script>
         <body>
-        
+
         <!-- Modal -->
         <div class="modal fade" id="confirm-action" role="dialog">
             <div class="modal-dialog">
-                
+
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header" style="padding:15px 30px;">
@@ -497,11 +523,13 @@ and open the template in the editor.
                             <b>Eli Davis</b><br>
                             ecd157@msstate.edu<br>
                             <br>
+                            <b>Josh Hawkins</b><br>
+                            jkh360@msstate.edu<br>
+                            <br>
                             <b>Hunter Holder</b><br>
                             hlh229@msstate.edu<br>
                             <br>
-                            <!--Other officers you can enter your contact information here-->
-                            
+                            <!--Other officers can enter their contact information here-->
                         </div>
                         </p>
                     </div>
@@ -509,12 +537,12 @@ and open the template in the editor.
                         <a class="btn btn-warning btn-ok" data-dismiss="modal">Got it!</a>
                     </div>-->
                 </div>
-                
+
             </div>
         </div>
-        
+
     </body>
-        
+
     </body>
 
 </html>
