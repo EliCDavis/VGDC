@@ -88,6 +88,8 @@ and open the template in the editor.
 
                     <ul class="nav navbar-nav navbar-right">
 
+                        <li><a href="javascript:$('#sign-up').modal()"><b>Sign Up</b></a></li>
+                        
                         <li><a href="javascript:$('#confirm-action').modal()"><b>Contact Us</b></a></li>
 
                         <li>
@@ -125,9 +127,9 @@ and open the template in the editor.
                                 <div class="panel-body row">
                                     <div data-bind="foreach: postsLoaded">
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-3 col-sm-4 col-xs-6">
                                             <a href="#" class="thumbnail">
-                                            <img style='width:100%'data-bind="attr:{src: imageURL}, click: $parent.displayPost"  alt="..." class="img-rounded">
+                                            <img style='width:100%; height: 150px;'data-bind="attr:{src: imageURL}, click: $parent.displayPost"  alt="..." class="img-rounded">
                                             </a>
                                         </div>
 
@@ -157,7 +159,7 @@ and open the template in the editor.
 
                             <div class="panel-body">
 
-                                <img style='width:100%'
+                                <img style='width:100%;'
                                     data-bind="attr:{src: imageURL},
                                     click: $parent.displayPost"
                                     alt="..." class="img-rounded"><br/> <br/>
@@ -243,6 +245,7 @@ and open the template in the editor.
             </div>
             
         </div>
+        
 
         <script>
 
@@ -486,13 +489,20 @@ and open the template in the editor.
 
                 });
                 
+                
                 self.switchToPlans = function(){
                     self.currentPageView("BaseDiagram");
-                    window.location.search = "page=GamePlans"
+                    window.location.search = "page=GamePlans";
                 };
+                
                 
                 self.switchToFrontPage = function(){
                     self.currentPageView("Front");
+                };
+                
+                
+                self.switchToSignUp = function(){
+                    self.currentPageView("SignupForm");
                 };
 
             }
@@ -506,8 +516,7 @@ and open the template in the editor.
             }
 
         </script>
-        <body>
-
+        
         <!-- Modal -->
         <div class="modal fade" id="confirm-action" role="dialog">
             <div class="modal-dialog">
@@ -533,16 +542,22 @@ and open the template in the editor.
                         </div>
                         </p>
                     </div>
-<!--                    <div class="modal-footer">
-                        <a class="btn btn-warning btn-ok" data-dismiss="modal">Got it!</a>
-                    </div>-->
+
                 </div>
+
+            </div>
+        </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="sign-up" role="dialog">
+            <div class="modal-dialog">
+
+                <iframe src="https://docs.google.com/forms/d/1cYU0Ziah7lQyvbzKTS3mevzOMvzSLzV0-bnFyxGya88/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
 
             </div>
         </div>
 
     </body>
 
-    </body>
-
+    
 </html>
