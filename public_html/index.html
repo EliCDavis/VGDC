@@ -15,31 +15,30 @@ and open the template in the editor.
 
         <script src="js/libs/ko/knockout-3.3.0.js"></script>
         <script src="js/libs/bootstrap-3.3.5-dist/js/bootstrap.js"></script>
-        <script src ="js/libs/github/github.js"></script>
         <script src="js/libs/showdown/showdown.min.js"></script>
 
         <link href="js/libs/bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
 
         <link href="js/libs/magic/magic.min.css" rel="stylesheet">
 
-        <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
-        <link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
-        <link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
-        <link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
-        <link rel="icon" type="image/png" sizes="192x192"  href="android-icon-192x192.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-        <link rel="manifest" href="manifest.json">
+        <link rel="apple-touch-icon" sizes="57x57" href="img/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="img/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="img/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="img/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="img/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="img/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="img/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="img/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="img/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="img/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+        <link rel="manifest" href="img/manifest.json">
         <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
+        <meta name="msapplication-TileImage" content="img/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
-        <link rel="shortcut icon" href="favicon.ico">
+        <link rel="shortcut icon" href="img/favicon.ico">
 
         <link href="main.css" rel="stylesheet">
 
@@ -71,7 +70,7 @@ and open the template in the editor.
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" data-bind="click: switchToFrontPage"><img alt="Brand" src="favicon.ico"></a>
+                    <a class="navbar-brand" data-bind="click: switchToFrontPage"><img alt="Brand" src="img/favicon.ico"></a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -201,6 +200,25 @@ and open the template in the editor.
                 </div> -->
 
                 <div class="col-md-4">
+                    
+                    <div class="panel panel-default">
+                        
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><a href="https://github.com/VideoGameDevClub/VacuumCleanSupreme/commits/master">Recent Project Commits</a></h3>
+                        </div>
+                        
+                        <div class="panel-body">
+                            
+                            <div data-bind="foreach: commits">
+                                <div class="alert alert-danger" role="alert"><a data-bind="text: commit.message, attr: { href: html_url } " ></a><br/>
+                                    <b data-bind="text: commit.author.date"></b>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">Links</h3>
@@ -343,7 +361,7 @@ and open the template in the editor.
                     } else {
 
                         if(xmlhttp.readyState === 4 && xmlhttp.status !== 200){
-                            alert("Failed loading announcements from Reddit!  This\
+                            alert("Failed loading from "+url+"!  This\
                                 sometimes happens if you're using IE. ");
 
                             if(errcb != null){
@@ -385,6 +403,25 @@ and open the template in the editor.
 
                 self.postsLoaded = ko.observableArray();
 
+                self.commits = ko.observableArray();
+                
+                getGithubCommits(function(data){
+                    
+                    var commitsToDisplay = [];
+                    
+                    for(var i = 0; i < data.length && i < 3; i ++){
+                        
+                        date = new Date(data[i].commit.author.date);
+                        
+                        // Sat January 23 - Time
+                        
+                        data[i].commit.author.date = reWriteDate(date.toString());
+                        commitsToDisplay.push(data[i]);
+                    }
+                    
+                    self.commits(commitsToDisplay);
+                });
+                
                 self.displayPost = function(post){
                     self.postBeingDisplayed(post);
 
@@ -506,6 +543,31 @@ and open the template in the editor.
                 };
 
             }
+
+            function getGithubCommits(cb){
+                
+                makeHttpRequest("https://api.github.com/repos/VideoGameDevClub/VacuumCleanSupreme/commits",
+                function(err){},
+                function(data){
+                    console.log(data);
+                    cb(data);
+                });
+                
+            }
+
+            function reWriteDate(input) {
+                word = input;
+                words = input.split(" ");
+
+                newWords = [words[0], words[1], words[2], "-", words[4].split(":").slice(0,2).join(":")];
+
+                newWords = newWords.join(" ");
+
+               
+                return newWords;
+            }
+
+      
 
             var announcements = new AnnouncementsViewModel();
 
